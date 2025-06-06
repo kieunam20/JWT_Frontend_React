@@ -1,10 +1,31 @@
 import './Register.scss'
 import { useHistory } from "react-router-dom";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
 const Register = (props) =>{
+    const [email, setEmail] = useState("");
+     const [phone, setPhone] = useState("");
+      const [username, setUsername] = useState("");
+       const [password, setPassword] = useState("");
+        const [confirmPassword, setConfirmPassword] = useState("");
+
+
    let history = useHistory();
         const handleLogin = ()  =>{
           history.push("/login")
           }
+
+          useEffect(() =>{
+            // axios.get("http://localhost:8080/api/test-api").then(data =>{
+            //   console.log(">>Check data axios", data)
+            // })
+          }, []);
+ const handleRegister = () =>{
+     let userData = {email,phone,username,password};
+     console.log(">>>check data", userData);
+ }         
+
         return (
            <div className="register-contanier mt-3">
            <div className="container"> 
@@ -25,27 +46,34 @@ const Register = (props) =>{
                             </div>
                             <div className='form-group'>
                                 <label> Email : </label>
-                            <input type='text' class='form-control' placeholder='Email address' />
+                            <input type='text' class='form-control' placeholder='Email address' 
+                            value={email} onChange={(event) => setEmail(event.target.value)} />
                             </div>
                              <div className='form-group'>
                                 <label> Phone : </label>
-                            <input type='text' class='form-control' placeholder='Phone number' />
+                            <input type='text' class='form-control' placeholder='Phone number' 
+                              value={phone} onChange={(event) => setPhone(event.target.value)} />
                             </div>
                             <div className='form-group'>
                                 <label>Username : </label>
-                            <input type='text' class='form-control' placeholder='Username' />
+                            <input type='text' class='form-control' placeholder='Username'
+                            value={username} onChange={(event) => setUsername(event.target.value)} />
                             </div>
                             <div className='form-group'>
                                 <label> Password : </label>
-                          <input type='password' class='form-control' placeholder='Password'/>
+                          <input type='password' class='form-control' placeholder='Password'
+                          value={password} onChange={(event) => setPassword(event.target.value)}/>
                             </div>
                              <div className='form-group'>
                                 <label> Re-enter Password : </label>
-                          <input type='password' class='form-control' placeholder='Re-enter Password'/>
+                          <input type='password' class='form-control' placeholder='Re-enter Password'
+                          value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)}/>
                             </div>
                         
                           
-                          <button className='btn btn-primary'> Register </button>
+                          <button className='btn btn-primary' onClick={() => handleRegister()}> 
+                            Register 
+                            </button>
                           
                          
                           <hr />
