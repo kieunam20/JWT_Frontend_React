@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { toast } from 'react-toastify';
 import {loginUser} from '../../services/userService';
 
+
 const Login = (props) =>{
    let history = useHistory();
 
@@ -32,8 +33,25 @@ const Login = (props) =>{
         toast.error("please enter your password")
         return;
       }
-      await loginUser(ValueLogin,password);
-     
+    let response =  await loginUser(ValueLogin,password);
+
+     if(response && response.data && +response.data.EC ===0){
+        //success
+        let data = {
+          isAuthenticated : true,
+          token : 'fake token'
+         }
+        sessionStorage.setItem('account', JSON.stringify(data));
+        history.push('/users');
+        //redux
+
+
+     }
+      if(response && response.data && +response.data.EC !==0){
+        //erorr
+        toast.error(response.data.EM)
+     }
+     console.log(">>> check response : ",response.data)
     }      
         return (
            <div className="login-contanier mt-3">
