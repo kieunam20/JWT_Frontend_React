@@ -1,17 +1,12 @@
 import './App.scss'
 import Nav from './components/Navigation/Nav';
-import Login from './components/Login/Login';
-import Register from './components/Register/Register';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
-import Users from './components/ManageUsers/Users';
 import { useEffect, useState } from 'react';
-import _ from"lodash";
+
+import {BrowserRouter as Router} from "react-router-dom";
+import AppRoutes from './routes/AppRoutes';
+
 function App() {
 
   const [account, setAccount] = useState({});
@@ -22,41 +17,18 @@ function App() {
       setAccount(JSON.parse(session)); 
    }
   }, []);
+  
   return (
+    <> 
     <Router>
+      <div className='app-header'>
+      <Nav />
+      </div>
     <div className='app-container'>
-      {
-        account && !_.isEmpty(account) && account.isAuthenticated
-        &&    <Nav />
-      }
-   
-       <Switch>
-          <Route path="/about">
-           About
-          </Route>
-          <Route path="/news">
-           news
-          </Route>
-          <Route path="/contact">
-            contact
-          </Route>
-           <Route path="/login">
-           <Login />
-          </Route>
-           <Route path="/register">
-         < Register/>
-          </Route>
-           <Route path="/users">
-         < Users/>
-          </Route>
-          <Route path="/" exact>
-           home
-          </Route>
-          <Route path="*"> 
-            404 not found
-          </Route>
-        </Switch>
+
+      <AppRoutes />
     </div>
+    </Router>
     <ToastContainer
 position="bottom-center"
 autoClose={5000}
@@ -68,7 +40,7 @@ pauseOnFocusLoss
 draggable
 pauseOnHover
 />
-    </Router>
+    </>
   );
 }
 
