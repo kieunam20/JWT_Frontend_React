@@ -3,6 +3,7 @@ import './Login.scss'
 import { useHistory } from "react-router-dom";
 import { toast } from 'react-toastify';
 import {loginUser} from '../../services/userService';
+import { has } from 'lodash';
 
 
 const Login = (props) =>{
@@ -43,6 +44,7 @@ const Login = (props) =>{
          }
         sessionStorage.setItem('account', JSON.stringify(data));
         history.push('/users');
+        window.location.reload();
         //redux
 
 
@@ -51,8 +53,14 @@ const Login = (props) =>{
         //erorr
         toast.error(response.data.EM)
      }
-     console.log(">>> check response : ",response.data)
     }      
+    const handlePressEnter = (event) =>{
+        if(event.charCode ===13 && event.code === "Enter"){
+           handleLogin();
+        }
+    }
+
+
         return (
            <div className="login-contanier mt-3">
            <div className="container"> 
@@ -83,6 +91,7 @@ const Login = (props) =>{
                           placeholder='Password'
                           value={password}  
                          onChange={(event) =>{ setPassword(event.target.value)}}
+                         onKeyPress={(event) => handlePressEnter(event) }
                           />
                           <button className='btn btn-primary' onClick={() => handleLogin()}> Login </button>
                           
