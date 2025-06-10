@@ -17,7 +17,7 @@ const PrivateRoutes = (props) =>{
 
     return(
         <>
-        <Route path={ props.path} componennt={props.componennt}/>
+        <Route path={ props.path} component={props. component}/>
         </>
     )
 }

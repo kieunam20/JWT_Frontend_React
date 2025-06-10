@@ -70,7 +70,7 @@ useEffect(() =>{
   }, [])
 
         return (
-           <div className="login-contanier mt-3">
+           <div className="login-container mt-3">
            <div className="container"> 
                  <div className="row px-3 px-sm-0"> 
                         <div className="content-left col-12 d-none col-sm-7 d-sm-block"> 
