@@ -1,0 +1,30 @@
+.user-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  .pagination {
+    display: flex;
+    list-style: none;
+    gap: 6px;
+
+    .page-item {
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+      user-select: none;
+
+      &.active {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+      }
+
+      .page-link {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  }
+}

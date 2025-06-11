@@ -9,8 +9,8 @@ const loginUser = (ValueLogin,password) =>{
           return  axios.post("http://localhost:8080/api/v1/login", 
              { ValueLogin,password})
 }
-const fetchAllUser = () =>{
-          return  axios.get("http://localhost:8080/api/v1/user/read"   );
+const fetchAllUser = (page,limit) =>{
+          return  axios.get(`http://localhost:8080/api/v1/user/read?page=${page}&limit=${limit}` );
 
 }
 export{registerNewUser , loginUser, fetchAllUser};
