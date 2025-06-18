@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
 import './Users.scss';
-import {fetchAllUser} from "../../services/userService";
+import {fetchAllUser , deleteUser} from "../../services/userService";
 import ReactPaginate from 'react-paginate';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { toast } from "react-toastify";
+import ModelDelete from "./ModelDelete";
+
 const Users = (props) =>{
         const [listUsers, setListUsers] = useState([]);
          const [currentPage, setCurrentPage] = useState(1);
           const [currentLimit, setCurrentLimit] = useState(3);
           const [totalPages, setTotalPages] = useState(0);
+          
+          const [ isShowModelDelete, setIsShowModelDelete] = useState(false);
+          const [dataModel, setDataModel] = useState({});
+
 
         useEffect(() =>{
           fetchUsers();
@@ -24,11 +31,33 @@ const Users = (props) =>{
 
         const handlePageClick = async (event) => {
           setCurrentPage(+event.selected + 1);
-      //  await  fetchUsers(+event.selected + 1);
-    
-};
+      //  await  fetchUsers(+event.selected + 1); 
+        };
+
+        const handleDeleteUser = async (user) =>{
+          setDataModel(user) ;
+          setIsShowModelDelete(true);
+        
+        }
+
+        const handleClose = () => {
+            setIsShowModelDelete(false);
+              setDataModel({}) ;
+        }
+        const confirmDeleteUser = async () => {
+           let response = await deleteUser(dataModel);
+        if( response && response.data.EC ===0){
+           toast.success(response.data.EM);
+            await  fetchUsers();
+            setIsShowModelDelete(false);
+        }else{
+          toast.error(response.data.EM);
+        }
+        }
+
 
     return (
+      <> 
       <div className="container" >
         <div className="manage-users container">
           <div className="user-header"> 
@@ -68,8 +97,10 @@ const Users = (props) =>{
                 <td> {item.username} </td>
                   <td> {item.Group ? item.Group.name :''  } </td>
                   <td> 
-                    <button className="btn btn-warning">  Edit </button> 
-                     <button  className="btn btn-danger"> Delete </button> 
+                    <button className="btn btn-warning mx-3">  Edit </button> 
+                     <button  className="btn btn-danger"
+                      onClick={() => handleDeleteUser(item)}
+                     > Delete </button> 
                      </td>
             </tr>
           )
@@ -86,29 +117,38 @@ const Users = (props) =>{
              </div>
 
               {totalPages > 0 && 
-             <div className="user-footer">
-                 <ReactPaginate 
-                 nextLabel={<FaChevronRight />}
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={2}
-                marginPagesDisplayed={4}
-                pageCount={totalPages}
-                previousLabel={<FaChevronLeft />}
-                pageClassName="page-item"
-                pageLinkClassName="page-link"
-                nextClassName="page-item"
-                nextLinkClassName="page-link"
-                breakLabel="..."
-                breakClassName="page-item"
-                breakLinkClassName="page-link"
-                containerClassName="pagination"
-                activeClassName="active"
-                renderOnZeroPageCount={null}
-                />
-             </div>
+            <ReactPaginate 
+  nextLabel={<FaChevronRight />}
+  previousLabel={<FaChevronLeft />}
+  onPageChange={handlePageClick}
+  pageRangeDisplayed={2}
+  marginPagesDisplayed={2}
+  pageCount={totalPages}
+  containerClassName="pagination"
+  pageClassName="page-item"
+  pageLinkClassName="page-link"
+  previousClassName="page-item"         //  Bọc prev trong li
+  previousLinkClassName="page-link"
+  nextClassName="page-item"             // Bọc next trong li
+  nextLinkClassName="page-link"
+  breakLabel="..."
+  breakClassName="page-item"
+  breakLinkClassName="page-link"
+  activeClassName="active"
+  renderOnZeroPageCount={null}
+/>
+
               }
                 </div>
         </div>
+
+        <ModelDelete
+        show = { isShowModelDelete }
+        handleClose = {handleClose}
+        confirmDeleteUser = { confirmDeleteUser}
+        dataModel = {dataModel}
+        />
+        </>
     )
 }
 
