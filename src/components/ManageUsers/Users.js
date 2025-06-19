@@ -5,7 +5,7 @@ import ReactPaginate from 'react-paginate';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { toast } from "react-toastify";
 import ModelDelete from "./ModelDelete";
-
+import ModelUser from "./ModelUser";
 const Users = (props) =>{
         const [listUsers, setListUsers] = useState([]);
          const [currentPage, setCurrentPage] = useState(1);
@@ -148,6 +148,12 @@ const Users = (props) =>{
         confirmDeleteUser = { confirmDeleteUser}
         dataModel = {dataModel}
         />
+
+        <ModelUser
+            title = {"Create new user"}
+
+        />
+
         </>
     )
 }
