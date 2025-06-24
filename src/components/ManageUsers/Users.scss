@@ -28,8 +28,28 @@
   color: #fff;
   border-color: #007bff;
 }
- .model-user {
-  .content-body{
-    
+ .manage-users-container{
+  i{
+    padding-right: 7px;
   }
+
+  .actions{
+    .refesh{
+      margin-right:10px ;
+    }
+  }
+  .user-body {
+    .edit{
+      color: orange;
+      cursor: pointer;
+      padding-right: 10px;
+    }
+
+    .delete{
+      color: red;
+      cursor: pointer;
+    }
+  }
+
+
  }

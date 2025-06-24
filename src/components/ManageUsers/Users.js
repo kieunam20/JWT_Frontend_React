@@ -70,20 +70,29 @@ const Users = (props) =>{
           setDataModelUser(user);
           setIsShowModelUser(true);
         }
+        const handleRefesh = async () =>{
+          await fetchUsers();
+        }
     return (
       <> 
       <div className="container" >
-        <div className="manage-users container">
+        <div className="manage-users-container">
           <div className="user-header"> 
-                <div className="title"> 
-                  <h3>Table user </h3>  
+                <div className="title mt-3"> 
+                  <h3>Manage user </h3>  
                 </div>
-            <div className="actions"> 
-                <button className="btn btn-success">Refesh </button>
-                 <button className="btn btn-primary"
+            <div className="actions my-3"> 
+                <button
+                 className="btn btn-success refesh"
+                 onClick={() => handleRefesh()}
+                 >
+                 <i className="fa fa-refresh" aria-hidden="true"></i> Refesh </button>
+                 <button
+                  className="btn btn-primary"
                   onClick= {() =>{ setIsShowModelUser(true); 
                     setActionModelUser("CREATE");
-                   } } > Add new user </button>
+                   } } ><i className="fa fa-plus-circle"></i>
+                     Add new user </button>
                  </div>
             </div>
 
@@ -114,12 +123,21 @@ const Users = (props) =>{
                 <td> {item.username} </td>
                   <td> {item.Group ? item.Group.name :''  } </td>
                   <td> 
-                    <button className="btn btn-warning mx-3"
-                      onClick={() => handleEditUser(item)}
-                    >  Edit </button> 
-                     <button  className="btn btn-danger"
-                      onClick={() => handleDeleteUser(item)}
-                     > Delete </button> 
+                    <span
+                    title="Edit"
+                    className="edit"
+                     onClick={() => handleEditUser(item)}
+                    > 
+                      <i className="fa fa-pencil"></i>
+                    </span>
+                    <span
+                     title="Delete"
+                    className="delete"
+                    onClick={() => handleDeleteUser(item)}
+                    >
+                      <i className="fa fa-trash-o"></i>
+                    </span>
+                     
                      </td>
             </tr>
           )
