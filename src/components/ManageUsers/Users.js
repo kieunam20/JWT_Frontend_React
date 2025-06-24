@@ -14,7 +14,7 @@ const Users = (props) =>{
           
           const [ isShowModelDelete, setIsShowModelDelete] = useState(false);
           const [dataModel, setDataModel] = useState({});
-
+        const [isShowModelUser, setIsShowModelUser] = useState(false);
 
         useEffect(() =>{
           fetchUsers();
@@ -55,7 +55,9 @@ const Users = (props) =>{
         }
         }
 
-
+        const onHideModelUser = () =>{
+          setIsShowModelUser(false);
+        }
     return (
       <> 
       <div className="container" >
@@ -66,7 +68,7 @@ const Users = (props) =>{
                 </div>
             <div className="actions"> 
                 <button className="btn btn-success">Refesh </button>
-                 <button className="btn btn-primary"> Add new user </button>
+                 <button className="btn btn-primary" onClick= {() => setIsShowModelUser(true)}> Add new user </button>
                  </div>
             </div>
 
@@ -151,6 +153,8 @@ const Users = (props) =>{
 
         <ModelUser
             title = {"Create new user"}
+              onHide = {onHideModelUser}
+              show = {isShowModelUser}
 
         />
 
