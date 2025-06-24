@@ -12,10 +12,14 @@ const Users = (props) =>{
           const [currentLimit, setCurrentLimit] = useState(3);
           const [totalPages, setTotalPages] = useState(0);
           
+          //dataModel Delete
           const [ isShowModelDelete, setIsShowModelDelete] = useState(false);
           const [dataModel, setDataModel] = useState({});
-        const [isShowModelUser, setIsShowModelUser] = useState(false);
 
+          //dataModel update create User
+        const [isShowModelUser, setIsShowModelUser] = useState(false);
+        const [ actionModelUser, setActionModelUser] = useState("CREATE");
+        const [ dataModelUser, setDataModelUser ] = useState({});
         useEffect(() =>{
           fetchUsers();
         }, [currentPage])
@@ -55,8 +59,16 @@ const Users = (props) =>{
         }
         }
 
-        const onHideModelUser = () =>{
+        const onHideModelUser = async () =>{
           setIsShowModelUser(false);
+          setDataModelUser({});
+        await  fetchUsers();
+        }
+
+        const handleEditUser = (user) =>{
+          setActionModelUser("UPDATE");
+          setDataModelUser(user);
+          setIsShowModelUser(true);
         }
     return (
       <> 
@@ -68,7 +80,10 @@ const Users = (props) =>{
                 </div>
             <div className="actions"> 
                 <button className="btn btn-success">Refesh </button>
-                 <button className="btn btn-primary" onClick= {() => setIsShowModelUser(true)}> Add new user </button>
+                 <button className="btn btn-primary"
+                  onClick= {() =>{ setIsShowModelUser(true); 
+                    setActionModelUser("CREATE");
+                   } } > Add new user </button>
                  </div>
             </div>
 
@@ -92,14 +107,16 @@ const Users = (props) =>{
           return(
             <tr key= {`row-${index}`}>
               <td>
-                {index +1}
+                { (currentPage - 1) * currentLimit +  index +1 }
               </td>
               <td> {item.id} </td>
                    <td> {item.email} </td>
                 <td> {item.username} </td>
                   <td> {item.Group ? item.Group.name :''  } </td>
                   <td> 
-                    <button className="btn btn-warning mx-3">  Edit </button> 
+                    <button className="btn btn-warning mx-3"
+                      onClick={() => handleEditUser(item)}
+                    >  Edit </button> 
                      <button  className="btn btn-danger"
                       onClick={() => handleDeleteUser(item)}
                      > Delete </button> 
@@ -152,9 +169,11 @@ const Users = (props) =>{
         />
 
         <ModelUser
-            title = {"Create new user"}
+           
               onHide = {onHideModelUser}
               show = {isShowModelUser}
+              action={actionModelUser}
+              dataModelUser={dataModelUser}
 
         />
 

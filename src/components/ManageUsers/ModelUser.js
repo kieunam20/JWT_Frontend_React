@@ -6,7 +6,9 @@ import { toast } from 'react-toastify';
 import _ from 'lodash';
 
 const ModelUser = (props) => {
-  
+  const{ action, dataModelUser} = props;
+
+
   const defaultUserData = {
     email:'' ,
     phone:'',
@@ -32,7 +34,25 @@ const ModelUser = (props) => {
   const [userGroups, setUserGroups] = useState([]);
   useEffect(() =>{
     getGroups();
+   
   }, [])
+
+   useEffect(() =>{
+    
+    if(action === 'UPDATE'){
+      setUserData({...dataModelUser, group: dataModelUser.Group ? dataModelUser.Group.id : ''});
+    }
+  }, [dataModelUser])
+
+  useEffect(() =>{
+    if(action === "CREATE"){
+     if(userGroups && userGroups.length > 0 ){
+      setUserData({...userData, group: userGroups[0].id } )
+     }
+      
+    }
+  }, [action])
+
 
 
   const getGroups = async () =>{
@@ -65,6 +85,7 @@ const ModelUser = (props) => {
               let _validInputs = _.cloneDeep(validInputsDefault);
                _validInputs[arr[i]] = false;
               setValidInputs(_validInputs);
+
                toast.error(`empty input ${[arr[i]]}`);
               check= false;
               break;
@@ -79,33 +100,50 @@ const ModelUser = (props) => {
         if(res.data && res.data.EC ===0){
              props.onHide();
              setUserData({...defaultUserData, group: userGroups[0].id } )
-        }else{
-          toast.error(`error create user...`);
+        }
+        if(res.data && res.data.EC !==0 ){
+          toast.error(res.data.EM);
+           let _validInputs = _.cloneDeep(validInputsDefault);
+               _validInputs[res.data.DT] = false;
+              setValidInputs(_validInputs);
         }
        }
       }
+
+   const handleCloseModelUser = () => {
+    
+    props.onHide();
+    setUserData(defaultUserData);
+    setValidInputs(validInputsDefault);
+
+   }   
+
         return(
             <> 
             <Modal
 
-      size="lg" show = {props.show} className="model-user" onHide={props.onHide }>
+      size="lg" show = {props.show} className="model-user" onHide={() =>handleCloseModelUser() }>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-        <span> { props.title} </span>
+        <span> { props.action === 'CREATE' ? 'create new user' : 'Edit a user'} </span>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className='content-body row' > 
           <div className='col-12 col-sm-6 form-group'>
             <label> Email address(<span style={{ color: "red" }}>*</span>): </label> 
-             <input className=  {validInputs.email  ? 'form-control' : 'form-control is-invalid' }
+             <input 
+             disabled = { action === 'CREATE' ? false : true}
+              className=  {validInputs.email  ? 'form-control' : 'form-control is-invalid' }
              type='email' value={userData.email} 
                 onChange={(event) =>handleOnChangeInput(event.target.value, "email")}
              />
           </div>
           <div className='col-12 col-sm-6 form-group'>
             <label> Phone Number(<span style={{ color: "red" }}>*</span>): </label> 
-             <input  className=  {validInputs.phone  ? 'form-control' : 'form-control is-invalid' } type='text' value={userData.phone} 
+             <input  disabled = { action === 'CREATE' ? false : true}
+              className=  {validInputs.phone  ? 'form-control' : 'form-control is-invalid' } 
+              type='text' value={userData.phone} 
               onChange={(event) =>handleOnChangeInput(event.target.value, "phone")}
              />
           </div>
@@ -115,12 +153,22 @@ const ModelUser = (props) => {
               onChange={(event) =>handleOnChangeInput(event.target.value, "username")}
              />
           </div>
-          <div className='col-12 col-sm-6 form-group'>
+          
+            <div className='col-12 col-sm-6 form-group'>
+              {
+            action === 'CREATE'
+            &&
+            <> 
             <label> Password(<span style={{ color: "red" }}>*</span>): </label> 
              <input  className=  {validInputs.password  ? 'form-control' : 'form-control is-invalid' } type='password' value={userData.password}
               onChange={(event) =>handleOnChangeInput(event.target.value, "password")}
              />
-          </div>
+             </>
+                   }
+                </div>
+         
+          
+       
           <div className='col-12 col-sm-12 form-group'>
             <label> Address(<span style={{ color: "red" }}>*</span>): </label> 
              <input className='form-control' type='text' value={userData.address}
@@ -131,6 +179,7 @@ const ModelUser = (props) => {
             <label> Gender : </label> 
               <select className='form-select'
                onChange={(event) =>handleOnChangeInput(event.target.value, "sex")}
+                 value={userData.sex}
               >
               <option defaultValue="Male"> Male </option>
                <option value="Female">Female </option>
@@ -140,6 +189,7 @@ const ModelUser = (props) => {
             <label> Group (<span style={{ color: "red" }}>*</span>): </label> 
              <select  className=  {validInputs.group  ? 'form-select ' : 'form-select  is-invalid' } 
               onChange={(event) =>handleOnChangeInput(event.target.value, "group")}
+              value={userData.group}
              >
               { userGroups.length > 0 &&
                 userGroups.map((item, index) =>{
@@ -154,9 +204,9 @@ const ModelUser = (props) => {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary " onClick={ props.onHide }>Close</Button>
+        <Button variant="secondary " onClick={() => handleCloseModelUser() }>Close</Button>
         <Button variant="primary" onClick={() => handleConFirmUser()}>
-            Save
+           {action === 'CREATE' ? 'Save' : 'Update'}
           </Button>
       </Modal.Footer>
     </Modal>
