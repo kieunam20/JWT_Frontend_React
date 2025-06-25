@@ -36,7 +36,7 @@ const Login = (props) =>{
       }
     let response =  await loginUser(ValueLogin,password);
 
-     if(response && response.data && +response.data.EC ===0){
+     if(response &&  +response.EC ===0){
         //success
         let data = {
           isAuthenticated : true,
@@ -49,9 +49,9 @@ const Login = (props) =>{
 
 
      }
-      if(response && response.data && +response.data.EC !==0){
+      if(response && +response.EC !==0){
         //erorr
-        toast.error(response.data.EM)
+        toast.error(response.EM)
      }
     }      
     const handlePressEnter = (event) =>{
