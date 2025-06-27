@@ -9,11 +9,15 @@ const instance = axios.create({
 
 instance.defaults.withCredentials = true;
 //after defalts after instance has been created
-//
+
 
 //Add a request interceptor
 instance.interceptors.request.use(function (config) {
     //do some thing before request this sent 
+    const token = localStorage.getItem("jwt");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
 },function (error){
 //Do something with request error
