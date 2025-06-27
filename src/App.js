@@ -4,21 +4,14 @@ import Nav from './components/Navigation/Nav';
 import 'react-toastify/dist/ReactToastify.css'
 import { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 import {BrowserRouter as Router} from "react-router-dom";
 import AppRoutes from './routes/AppRoutes';
 
 function App() {
 
-  const [account, setAccount] = useState({});
-
-  useEffect(() =>{
-   let session =  sessionStorage.getItem('account');
-   if(session){
-      setAccount(JSON.parse(session)); 
-   }
-  }, []);
+  
   
   return (
     <> 
