@@ -10,7 +10,7 @@ const PrivateRoutes = (props) =>{
     if( user && user.isAuthenticated  === true ){
     return(
         <>
-        <Route path={ props.path} component={props. component}/>
+        <Route path={ props.path} component={props.component}/>
         </>
     )
     } else{

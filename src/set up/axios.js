@@ -32,7 +32,7 @@ switch(status){
         //ahthentication(token related issues)
     case 401: {
         toast.error(`Authorized the user. Please login...`);
-          return Promise.reject(error);
+          return error.response.data;
     }
     //forbidden (permission related issues)
     case 403 : {
