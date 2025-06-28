@@ -25,8 +25,40 @@ body {
   color: white;
 }
 }
+.nav-header{
+  .bg-header{
+    background-color: antiquewhite;
+  }
+  .brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px; // khoảng cách giữa logo và text
+}
 
+.logo-img {
+  height: 40px;
+}
 
+.brand-text {
+  font-weight: bold;
+  font-size: 20px;
+  white-space: nowrap;
+}
 
+.navbar-brand{
+  color: black !important;
+}
+
+.navbar-nav {
+  a,
+  .nav-link {
+    color: #333 !important;
+
+    &:hover {
+      color: rgb(14, 23, 199) !important;
+    } 
+  }
+}
+}
 
 
