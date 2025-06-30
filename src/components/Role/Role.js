@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './Roles.scss';
 import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
 import {createRoles} from '../../services/roleService';
+import TableRole from './TableRole';
 
 const Roles = (props) =>{
 
     const dataChildDefault = {url:'' , description:'', isValidUrl: true }
+    const childRef = useRef();
 
     const[listChilds, setListChilds] = useState({
         child1 : dataChildDefault
@@ -59,6 +61,8 @@ const Roles = (props) =>{
         let res = await createRoles(data);
         if (res && res.EC === 0) {
             toast.success(res.EM);
+           childRef.current.fetchListRolesAgain();
+
         }
     } else {
         // Có lỗi → cập nhật trạng thái lỗi cho input
@@ -82,7 +86,7 @@ const Roles = (props) =>{
      return(
             <div className='role-container'>
             <div className='container'>
-            <div className='mt-3'>
+            <div className='adding-roles mt-3'>
             <div className='title-role'><h4>Add a new roles.... </h4>  </div>
             <div className='role-parent'>
             {
@@ -120,10 +124,15 @@ const Roles = (props) =>{
             }
             <div>
                 <button className='btn btn-warning mt-3' onClick={() => handleSave()}> Save </button>
+            </div>        
             </div>
-          
             </div>
+            <hr />
+            <div className='mt-3 table-role'> 
+                <h4> List current roles :  </h4>
+                <TableRole ref={childRef} />
             </div>
+
             </div>
             </div>
      );
