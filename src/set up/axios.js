@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 // Set config defaults when create the instance 
 const instance = axios.create({
     baseURL: 'http://localhost:8080'
+    //   baseURL: process.evn.REACT_APP_BACKEND_URL  //use when deploy
 });
 
 instance.defaults.withCredentials = true;
