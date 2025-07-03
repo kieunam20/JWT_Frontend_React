@@ -36,7 +36,12 @@ const status = error && error.response && error.response.status || 500;
 switch(status){
         //ahthentication(token related issues)
     case 401: {
-        toast.error(`Authorized the user. Please login...`);
+        if(window.location.pathname !== '/' && window.location.pathname !== '/login'
+            && window.location.pathname !== '/register' 
+         ){
+             toast.error(`Authorized the user. Please login...`);
+        }
+       
           return error.response.data;
     }
     //forbidden (permission related issues)

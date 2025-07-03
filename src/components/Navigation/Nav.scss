@@ -26,6 +26,11 @@ body {
 }
 }
 .nav-header{
+  padding-bottom: 0.5rem;
+
+  .navbar{
+    padding-bottom: 0 !important;
+  }
   .bg-header{
     background-color: antiquewhite;
   }
@@ -53,6 +58,7 @@ body {
   a,
   .nav-link {
     color: #333 !important;
+    border-bottom: 2px solid;
 
     &:hover {
       color: rgb(14, 23, 199) !important;

@@ -1,11 +1,14 @@
 import './Register.scss'
-import { useHistory } from "react-router-dom";
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useHistory , Link } from "react-router-dom";
+import { UserContext } from '../../context/UserContext';
+import { useEffect, useState , useContext } from 'react';
 import { toast } from 'react-toastify';
 import {registerNewUser} from '../../services/userService';
 
 const Register = (props) =>{
+
+    const { user} = UserContext(UserContext);
+
     const [email, setEmail] = useState("");
      const [phone, setPhone] = useState("");
       const [username, setUsername] = useState("");
@@ -26,10 +29,9 @@ const Register = (props) =>{
           }
 
           useEffect(() =>{
-            // axios.get("http://localhost:8080/api/v1/test-api").then(data =>{
-            //   console.log(">>Check data axios", data)
-            // })
-             
+           if( user  && user.isAuthenticated){
+            history.push('/');
+           }
 
           }, []);
 
@@ -88,7 +90,11 @@ const Register = (props) =>{
                  <div className="row px-3 px-sm-0"> 
                         <div className="content-left col-12 d-none col-sm-7 d-sm-block"> 
                           <div className='brand'>
-                                 Kieu Nam IT
+                               <Link to='/'>
+                            <span > 
+                            Kieu Nam IT
+                            </span>
+                            </Link>  
                             </div>
                             <div className='detail'>
                                 Kieu Nam  helps you connect and share with the people in your life.
@@ -137,6 +143,12 @@ const Register = (props) =>{
                            <button className='btn btn-success' onClick={() => handleLogin()}> 
                             Already've an account. Login 
                             </button>
+                            <Link to='/'>
+                            <i className='fa fa-arrow-circle-left'> </i>
+                            <span title='Return to home page' > 
+                             Return to home page
+                            </span>
+                            </Link>
                           </div>
                          
                         </div>
